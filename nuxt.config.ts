@@ -5,72 +5,52 @@ export default defineNuxtConfig({
   modules: [
     '@nuxtjs/tailwindcss',
     '@nuxt/image',
-    'nuxt-vuefire',
+    // 'nuxt-server-utils',
+    // '@sidebase/nuxt-auth',
   ],
 
   build: {
-    transpile: ['vuefire', 'firebase']
+    transpile: ['@material-tailwind/html']
+  },
+
+  // vuefire: {
+  //   auth: {
+  //     enabled: true,
+  //     sessionCookie: true
+  //   },
+  //   config: {
+  //     apiKey: "AIzaSyB_8Fri1RIr2j7DkH1EXxiUkCLwx1WPAj0",
+  //     authDomain: "mentedu.firebaseapp.com",
+  //     projectId: "mentedu",
+  //     storageBucket: "mentedu.appspot.com",
+  //     messagingSenderId: "269022003412",
+  //     appId: "1:269022003412:web:a892b76769bb7883cfbb41",
+  //     measurementId: "G-ZFLRFJGF21"
+  //   }
+  // },
+
+  tailwindcss: {
+    cssPath: '~/assets/css/input.css'
   },
 
   ssr: true,
 
-  vuefire: {
-    auth: {
-      enabled: true,
-      sessionCookie: true
-    },
-    config: {
-      apiKey: "AIzaSyB_8Fri1RIr2j7DkH1EXxiUkCLwx1WPAj0",
-      authDomain: "mentedu.firebaseapp.com",
-      projectId: "mentedu",
-      storageBucket: "mentedu.appspot.com",
-      messagingSenderId: "269022003412",
-      appId: "1:269022003412:web:a892b76769bb7883cfbb41",
-      measurementId: "G-ZFLRFJGF21"
-    }
-  },
-
-  // auth: {
-  //   provider: {
-  //     type: 'local',
-  //     endpoints: {
-  //       getSession: { path: '/user' }
-  //     },
-  //     pages: {
-  //       login: '/'
-  //     },
-  //     token: {
-  //       signInResponseTokenPointer: '/token'
-  //     },
-  //     sessionDataType: { id: 'string', email: 'string', name: 'string', role: 'admin | guest | account', subscriptions: "{ id: number, status: 'ACTIVE' | 'INACTIVE' }[]" }
-  //   },
-  //   session: {
-  //     // Whether to refresh the session every time the browser window is refocused.
-  //     enableRefreshOnWindowFocus: true,
-  //
-  //     // Whether to refresh the session every `X` milliseconds. Set this to `false` to turn it off. The session will only be refreshed if a session already exists.
-  //     enableRefreshPeriodically: 5000
-  //   },
-  //   isEnabled: true,
-  //   // baseUrl: process.env.AUTH_ORIGIN,
-  //   provider: {
-  //     type: 'authjs',
-  //   },
-  //   globalAppMiddleware: {
-  //     isEnabled: true
-  //   }
-  // },
-
-  build: {
-    transpile: [/*'jsonwebtoken'*/]
-  },
-
-  tailwindcss: {
-    cssPath: '~/assets/css/tailwind.css'
-  },
-
   app: {
     head: {
+      script: [
+        {
+          async: true,
+          src:"https://unpkg.com/@material-tailwind/html/scripts/ripple.js",
+        },
+        {
+          async: true,
+          src:"https://unpkg.com/@material-tailwind/html/scripts/tabs.js",
+        },
+        {
+          async: true,
+          src:"https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/datepicker.min.js"
+        }
+      ],
       charset: 'utf-16',
       viewport: 'width=device-width, initial-scale=1',
       link: [
@@ -78,7 +58,21 @@ export default defineNuxtConfig({
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
         { rel: 'preconnect', href: 'https://fonts.gstatic.com' },
       ]
-    }
+    },
+  },
+
+  // auth: {
+  //   baseURL: process.env.AUTH_ORIGIN,
+  //   provider: {
+  //     type: "authjs",
+  //   },
+  // },
+
+  postcss: {
+    plugins: {
+      tailwindcss: {},
+      autoprefixer: {},
+    },
   },
 
   pages: true,
@@ -86,10 +80,9 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       API_URL: process.env.API_URL,
-      PublishableKey: process.env.API_KEY,
+      API_PHOTO: process.env.API_PHOTO,
       GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     },
-    SecretKey: process.env.SECRET_KEY,
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
   },
 })

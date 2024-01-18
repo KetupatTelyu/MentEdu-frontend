@@ -1,5 +1,5 @@
 <template>
-    <div class="h-screen flex justify-center items-center">
+    <div class="h-full mt-40 flex justify-center items-center">
       <FormsRegister />
     </div>
 </template>

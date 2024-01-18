@@ -6,7 +6,7 @@
         class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4"
       >
         <a
-          href="/public"
+          href="/"
           class="flex items-center space-x-3 rtl:space-x-reverse"
         >
           <img
@@ -21,21 +21,21 @@
         </a>
         <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
           <button
-              v-if="user"
-              @click="signOut(auth)"
+              v-if="auth"
+              @click="logout()"
               type="button"
               class="text-[#2E584E] bg-[#C3F499] focus:ring-4 focus:outline-none focus:ring-blue-300 text-[18px] font-medium leading-normal rounded-full border-4 border-[#ffffffa0] px-6 py-2 text-center"
           >
             Log Out
           </button>
-            <NuxtLink v-else to="/login">
+            <a v-else href="/login">
                 <button
                     type="button"
                     class="text-[#2E584E] bg-[#C3F499] focus:ring-4 focus:outline-none focus:ring-blue-300 text-[18px] font-medium leading-normal rounded-full border-4 border-[#ffffffa0] px-6 py-2 text-center"
                 >
                     Mulai Sekarang
                 </button>
-            </NuxtLink>
+            </a>
           <button
             data-collapse-toggle="navbar-sticky"
             type="button"
@@ -69,30 +69,30 @@
             class="flex flex-col p-4 md:py-3 md:px-6 mt-4 font-normal border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-[#ffffff15] md:rounded-full dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700"
           >
             <li>
-              <NuxtLink
-                href="/"
+              <a
+                href="/#main"
                 class="block py-2 px-3 leading-snug md:hover:text-[#C3F499] text-black bg-blue-700 rounded md:bg-transparent md:p-0 md:dark:text-white"
                 aria-current="page"
-                >Beranda</NuxtLink
+                >Beranda</a
               >
             </li>
             <li>
               <a
-                href="#"
+                href="/#about"
                 class="block py-2 px-3 leading-snug text-black rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-[#C3F499] md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
                 >Tentang Kami</a
               >
             </li>
             <li>
-              <NuxtLink
-                to="/main"
+              <a
+                href="/main"
                 class="block py-2 px-3 leading-snug text-black rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-[#C3F499] md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-                >Konsultasi & Pelatihan</NuxtLink
+                >Konsultasi & Pelatihan</a
               >
             </li>
             <li>
               <a
-                href="#"
+                href="/main"
                 class="block py-2 px-3 leading-snug text-black rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-[#C3F499] md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
                 >Komunitas</a
               >
@@ -105,32 +105,19 @@
   <script setup>
   import { onMounted } from 'vue'
   import { initFlowbite } from 'flowbite'
-  import {useCurrentUser, useFirebaseAuth} from "vuefire";
-  import { signOut } from "firebase/auth";
-
-  const auth = useFirebaseAuth()
-  const user = useCurrentUser()
-  // const { status, signOut } = useAuth()
-
-  // const loggedIn = computed(() => status.value === 'authenticated')
-
-  // initialize components based on data attribute selectors
+  import {initCollapses} from "flowbite";
+  let auth
+  let logout
+  if (process.client) {
+    auth = localStorage.getItem('Auth')
+    logout = async () => {
+      localStorage.removeItem('Auth')
+      window.location.reload()
+    };
+  }
   onMounted(() => {
     initFlowbite();
+    initCollapses()
   })
-
-  // const client = useSupabaseClient();
-  // const user = useSupabaseUser();
-  const loading = ref(false);
-  
-  // Logout function
-  const logout = async () => {
-    loading.value = true;
-    const { error } = await client.auth.signOut();
-    if (error) {
-      loading.value = false;
-      return alert("Something went wrong!");
-    }
-  };
   </script>
   

@@ -1,6 +1,7 @@
 <template>
     <div>
-        <LandingPageHero />
+      <LandingPageHero id="main" />
+      <LandingPageAbout id="about"/>
     </div>
 </template>
 <script setup lang="ts">

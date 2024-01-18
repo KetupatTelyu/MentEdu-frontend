@@ -9,7 +9,7 @@
     </div>
     <form
         class="max-w-sm mx-auto"
-        @submit.prevent="signinEmailPassword()">
+        @submit.prevent="login()">
       <div class="mb-5">
         <label
           for="email"
@@ -22,7 +22,7 @@
           id="email"
           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
           placeholder="Masukkan email anda"
-          v-model="email"
+          v-model="form.email"
           required
         />
       </div>
@@ -38,7 +38,7 @@
           id="password"
           placeholder="••••••••"
           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          v-model="password"
+          v-model="form.password"
           required
         />
       </div>
@@ -74,8 +74,6 @@
     <button
         type="submit"
         class="max-w-sm text-[#2E584E] flex self-center justify-center items-center bg-white border hover:bg-[#cccccc] focus:ring-4 focus:outline-none focus:ring-blue-300 font-bold leading-normal rounded-full text-base w-full sm:w-full px-5 py-2.5 text-center"
-
-        @click="signinRedirect()"
     >
         <span class="pr-3">
           <svg
@@ -112,7 +110,7 @@
         </span>
       Masuk dengan Google
     </button>
-    <p class="text-center mt-8">Tidak punya akun? <NuxtLink class="text-[#2E584E]" to="/register">Daftar Disini</NuxtLink> </p>
+    <p class="text-center mt-8">Tidak punya akun? <a class="text-[#2E584E]" href="/register">Daftar Disini</a> </p>
     <br>
     <!--p>
       You are currently logged in as:
@@ -128,53 +126,38 @@
     </p-->
   </div>
 </template>
-<script lang="ts">
-import { GoogleAuthProvider } from 'firebase/auth'
-export const googleAuthProvider = new GoogleAuthProvider()
-</script>
 <script setup lang="ts">
-import {
-  getRedirectResult,
-  signInWithEmailAndPassword,
-  signInWithRedirect,
-  signOut,
-} from 'firebase/auth'
-import { useCurrentUser, useFirebaseAuth } from 'vuefire'
+// const auth = useFirebaseAuth()!
+// const users = useCurrentUser()
 
-const auth = useFirebaseAuth()!
-const users = useCurrentUser()
-const email = ref('')
-const password = ref('')
-function signinRedirect() {
-  signInWithRedirect(auth, googleAuthProvider).catch((reason) => {
-    console.error('Failed signinRedirect', reason)
-    error.value = reason
+import {redirect} from "next/navigation";
+
+const form = ref({
+  email: "",
+  password: "",
+});
+
+const login = async () => {
+  const response: any = await $fetch('/api/login', {
+    baseURL: useRuntimeConfig().public.API_URL,
+    method: 'POST',
+    body: {
+      email: form.value.email,
+      password: form.value.password
+    },
   })
+  localStorage.setItem('Auth', response)
+  window.location.reload()
 }
 
-function signinEmailPassword() {
-  signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        window.location.replace('../main')
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-      });
-}
+// const { signIn } = useAuth();
 
-// display errors if any
-const error = ref<Error | null>(null)
-// only on client side
-onMounted(() => {
-  getRedirectResult(auth).catch((reason) => {
-    console.error('Failed redirect result', reason)
-    error.value = reason
-  })
-})
-
-const route = useRoute()
+// async function handleLogin() {
+//   try {
+//     await signIn("credentials", form.value);
+//     useRouter().push({
+//       name: "index",
+//     });
+//   } catch (e) {}
+// }
 </script>

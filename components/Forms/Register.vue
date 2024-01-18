@@ -7,7 +7,7 @@
         untuk melanjutkan
       </p>
     </div>
-    <form class="max-w-sm mx-auto" @submit.prevent="signUp">
+    <form class="max-w-sm mx-auto" @submit.prevent="register()">
       <div class="mb-5">
         <label
             for="email"
@@ -20,7 +20,7 @@
             id="email"
             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             placeholder="Masukkan email anda"
-            v-model="email"
+            v-model="form.email"
             required
         />
       </div>
@@ -36,7 +36,7 @@
             id="password"
             placeholder="••••••••"
             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            v-model="password"
+            v-model="form.password"
             required
         />
       </div>
@@ -46,25 +46,57 @@
         >Nama Panjang</label>
         <input
             type="text"
-            name="nama"
-            id="nama"
+            name="name"
+            id="name"
             placeholder="Masukkan nama anda"
             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            v-model="nama"
+            v-model="form.name"
+            required
+        />
+      </div>
+      <div class="mb-5">
+        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="file_input">Foto Profil</label>
+        <input @change="handleFileChange" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file_input" type="file">
+      </div>
+      <div class="mb-5">
+        <label for="dob"
+               class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >Tanggal Lahir</label>
+        <input
+            datepicker
+            type="text"
+            name="dob"
+            id="dob"
+            datepicker-format="dd/mm/yyyy"
+            placeholder="Masukkan tanggal lahir anda"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            v-model="form.dob"
+            required
+        />
+      </div>
+      <div class="mb-5">
+        <label for="phone-input"
+               class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >Nomor Telepon</label>
+        <input
+            type="text"
+            name="phone-input"
+            id="phone-input"
+            placeholder="Masukkan nomor telepon anda"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            v-model="form.phone_number"
             required
         />
       </div>
       <button
           type="submit"
           class="text-[#2E584E] mb-4 bg-[#C3F499] hover:bg-[#74f18f] focus:ring-4 focus:outline-none focus:ring-blue-300 font-bold leading-normal rounded-full text-base w-full sm:w-full px-5 py-2.5 text-center"
-          :disabled="loading"
       >
         Daftar
       </button>
       <button
           type="submit"
           class="text-[#2E584E] flex justify-center items-center bg-white border hover:bg-[#cccccc] focus:ring-4 focus:outline-none focus:ring-blue-300 font-bold leading-normal rounded-full text-base w-full sm:w-full px-5 py-2.5 text-center"
-          :disabled="loading"
       >
         <span class="pr-3">
           <svg
@@ -105,20 +137,52 @@
     <p class="text-center mt-8">Sudah punya akun? <NuxtLink class="text-[#2E584E]" to="login">Masuk Disini</NuxtLink> </p>
   </div>
 </template>
-<script>
-definePageMeta({
-  layout: "light"
+<script setup lang="ts">
+import {initFlowbite} from "flowbite";
+
+onMounted(() => {
+  initFlowbite()
 })
-// const email = ref('')
-// const password = ref('')
-// const name = ref('')
-// const photo = ref('')
-// const dob = ref('')
-// const phone_number = ref('')
-// const client = useSupabaseAuthClient()
-// const user = useSupabaseUser()
-// const loading = ref(false)
-// const authError = ref('')
+
+const form = ref({
+  email : "",
+  password : "",
+  name : "",
+  photo : null,
+  dob : "",
+  phone_number : ""
+});
+
+let selectedFile = ref(null)
+
+function handleFileChange(event) {
+  selectedFile = event.target.files[0];
+  console.log(selectedFile);
+  return selectedFile
+}
+
+const register = async () => {
+  const fd = new FormData()
+  fd.append('image', selectedFile)
+  const response: any = await $fetch('/api/register', fd, {
+    baseURL: useRuntimeConfig().public.API_URL,
+    method: 'POST',
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+    body: {
+      email : form.value.email,
+      password : form.value.password,
+      name : form.value.name,
+      photo : await handleFileChange(),
+      dob : form.value.dob,
+      phone_number : form.value.phone_number
+    },
+  })
+  console.log(response)
+  navigateTo('/login')
+  window.location.reload()
+}
 //
 // watchEffect(async () => {
 //   if (user.value) {

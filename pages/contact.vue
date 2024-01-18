@@ -3,7 +3,9 @@
 </script>
 
 <template>
-<p class="mt-20">
-  {{ user }}
-</p>
+
 </template>
+
+<style scoped>
+
+</style>

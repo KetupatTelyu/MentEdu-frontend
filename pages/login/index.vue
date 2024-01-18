@@ -7,10 +7,6 @@
 definePageMeta({
   layout: "default",
   middleware: ['public'],
-  // auth: {
-  //   unauthenticatedOnly: true,
-  //   navigateAuthenticatedTo: '/main',
-  // },
 });
 useHead({
   title: "Login | MentEdu",
