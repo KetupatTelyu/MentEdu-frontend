@@ -24,14 +24,14 @@
             v-if="auth"
             @click="logout()"
             type="button"
-            class="text-[#2E584E] bg-[#C3F499] focus:ring-4 focus:outline-none focus:ring-blue-300 text-[18px] font-medium leading-normal rounded-full border-4 border-[#ffffffa0] px-6 py-2 text-center"
+            class="text-[#2E584E] hover:bg-gray-300 bg-[#C3F499] focus:ring-4 focus:outline-none focus:ring-blue-300 text-[18px] font-medium leading-normal rounded-full border-4 border-[#ffffffa0] px-6 py-2 text-center"
         >
           Log Out
         </button>
         <a v-else href="/login">
           <button
               type="button"
-              class="text-[#2E584E] bg-[#C3F499] focus:ring-4 focus:outline-none focus:ring-blue-300 text-[18px] font-medium leading-normal rounded-full border-4 border-[#ffffffa0] px-6 py-2 text-center"
+              class="text-[#2E584E] hover:bg-gray-300 bg-[#C3F499] focus:ring-4 focus:outline-none focus:ring-blue-300 text-[18px] font-medium leading-normal rounded-full border-4 border-[#ffffffa0] px-6 py-2 text-center"
           >
               Mulai Sekarang
           </button>

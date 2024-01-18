@@ -153,18 +153,18 @@ const form = ref({
   phone_number : ""
 });
 
-let selectedFile = ref(null)
-
-function handleFileChange(event) {
-  selectedFile = event.target.files[0];
-  console.log(selectedFile);
-  return selectedFile
-}
+// let selectedFile = ref(null)
+//
+// function handleFileChange(event) {
+//   selectedFile = event.target.files[0];
+//   console.log(selectedFile);
+//   return selectedFile
+// }
 
 const register = async () => {
-  const fd = new FormData()
-  fd.append('image', selectedFile)
-  const response: any = await $fetch('/api/register', fd, {
+  // const fd = new FormData()
+  // fd.append('image', selectedFile)
+  const response: any = await $fetch('/api/register', {
     baseURL: useRuntimeConfig().public.API_URL,
     method: 'POST',
     headers: {
@@ -174,7 +174,6 @@ const register = async () => {
       email : form.value.email,
       password : form.value.password,
       name : form.value.name,
-      photo : await handleFileChange(),
       dob : form.value.dob,
       phone_number : form.value.phone_number
     },

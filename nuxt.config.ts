@@ -10,7 +10,7 @@ export default defineNuxtConfig({
   ],
 
   build: {
-    transpile: ['@material-tailwind/html']
+    transpile: ['@material-tailwind/html', 'flowbite-datepicker']
   },
 
   // vuefire: {
@@ -33,7 +33,7 @@ export default defineNuxtConfig({
     cssPath: '~/assets/css/input.css'
   },
 
-  ssr: true,
+  ssr: false,
 
   app: {
     head: {

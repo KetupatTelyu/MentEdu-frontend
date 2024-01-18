@@ -57,10 +57,13 @@ const listAhli = ref([
   },
 ]);
 // const jadwalSaya = ref()
-import {initTabs, initCarousels} from "flowbite";
+import {initTabs, initCarousels, initFlowbite} from "flowbite";
+import {Datepicker} from "flowbite-datepicker";
 onMounted(() => {
   initTabs()
   initCarousels()
+  initFlowbite()
+  Datepicker()
 })
 </script>
 
@@ -202,6 +205,7 @@ onMounted(() => {
           </div>
         </div>
       </div>
+      <!-- Modal 1 -->
       <div id="static-modal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
         <div class="relative w-full max-w-2xl max-h-full flex flex-row bg-white rounded-xl">
           <div class="flex flex-col w-full max-w-[200px] border-r border-black border-opacity-20 rounded-br-3xl p-6">

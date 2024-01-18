@@ -9,7 +9,7 @@ import Session from "~/components/Card/Session.vue";
       <h1 class="text-sky-950 text-base font-bold leading-normal">Mentorship Session</h1>
       <p class="text-slate-500 text-xs font-normal leading-none">60 minutes</p>
     </div>
-    <button class="bg-[#2E584E] text-white text-base leading-normal px-5 py-3 rounded-lg">Hubungi Konsultan</button>
+    <a href="mailto:faiq.athif@gmail.com" class="bg-[#2E584E] text-white text-base leading-normal px-5 py-3 rounded-lg">Hubungi Konsultan</a>
   </div>
 </template>
 

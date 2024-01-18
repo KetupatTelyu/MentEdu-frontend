@@ -4,13 +4,17 @@ definePageMeta({
   layout: "default",
   middleware: 'auth',
 });
+const config = useRuntimeConfig()
 let auth
 if (process.client) {
   auth = localStorage.getItem('Auth')
 }
 console.log(auth)
-const listAhli = ref([
-  {
+const listAhli = await $fetch('/api/user/user_role/3', {
+  baseURL: config.public.API_URL,
+  method: 'GET',
+})
+listAhli.data.unshift({
     id: 1,
     name: "Joshua Odoi",
     photo: "/joshua-photo.jpg",
@@ -57,13 +61,20 @@ const listAhli = ref([
     reviewsTotal: 0,
     experienceYear: 5,
     avgAttendance: 100,
-  },
-]);
+  })
 
 const blogs = await $fetch('/api/article', {
-  baseURL: 'http://mentedu-be.kakashispiritnews.my.id',
+  baseURL: config.public.API_URL,
   method: 'GET',
 })
+
+// blogs.data.unshift({
+//   title: 'Liverpool Juara',
+//   body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Molestie at elementum eu facilisis sed odio. Pellentesque sit amet porttitor eget dolor morbi non arcu. Sed ullamcorper morbi tincidunt ornare massa eget egestas. Massa sapien faucibus et molestie ac feugiat. Viverra accumsan in nisl nisi scelerisque. Suspendisse potenti nullam ac tortor vitae purus. Cras tincidunt lobortis feugiat vivamus at. Suscipit adipiscing bibendum est ultricies integer quis auctor elit. Viverra adipiscing at in tellus integer feugiat scelerisque varius. Purus ut faucibus pulvinar elementum integer enim. Amet mauris commodo quis imperdiet massa tincidunt.',
+//   image: '',
+//   slug: 'tes-tes',
+//   category_id: 1,
+// })
 
 
 useHead({
@@ -113,7 +124,7 @@ onMounted(() => {
         <SearchSession class="mb-5" />
         <CardSession
             class="col-2 ml-2 mb-10"
-            v-for="ahli in listAhli"
+            v-for="ahli in listAhli.data"
             :key="ahli.id"
             :ahli="ahli"
         />
